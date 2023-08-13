@@ -1,0 +1,93 @@
+.navBar {
+    display: flex;
+    border-bottom: 1px solid rgb(116, 233, 194);
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    box-shadow: 10px 0px 5px 0px gray;
+    border-radius: 5px;
+    align-items: center;
+    position: relative;
+    // animation: appearFromRight 0.5s linear;
+
+    .navImg {
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 300px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+    }
+
+    .navSearch {
+        width: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        input {
+            width: 90%;
+            padding: 10px 10px 10px 40px;
+            border-radius: 5px;
+            border: 1px solid gainsboro;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        img {
+            height: 20px;
+            width: 20px;
+            position: relative;
+            left: 30px;
+        }
+
+        button {
+            border-radius: 5px;
+            width: 100px;
+            border: none;
+            position: relative;
+            padding: 10px 20px;
+            right: 98px;
+            white-space: nowrap;
+            background-color: transparent;
+        }
+
+        button:hover {
+            background-color: rgb(219, 243, 235);
+        }
+
+    }
+
+    .navButton {
+        width: 20%;
+        display: flex;
+        justify-content: space-around;
+        padding-right: 30px;
+        align-items: center;
+        gap: 5%;
+
+        .order {
+            border-left: 1px solid rgb(103, 99, 99);
+        }
+    }
+
+}
+
+
+/* Định nghĩa keyframes cho chuyển động */
+@keyframes appearFromRight {
+    0% {
+        right: -100%;
+    }
+
+    100% {
+        right: 0;
+    }
+}

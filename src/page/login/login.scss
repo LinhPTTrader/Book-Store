@@ -1,0 +1,24 @@
+.formLogin {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    //border: 1px solid salmon;
+    Form {
+        border: 1px solid #B7E8EB;
+        background-color: white;
+        padding: 100px 50px;
+        border-radius: 10px;
+        box-shadow: 5px 5px 5px 5px #B7E8EB;
+        ;
+        position: relative;
+
+        .createAccount {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+        }
+    }
+
+}

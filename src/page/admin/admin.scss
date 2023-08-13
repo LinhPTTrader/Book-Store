@@ -1,0 +1,208 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+.container {
+    width: 80%;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-space-between {
+    justify-content: space-between;
+}
+
+.flex-space-around {
+    justify-content: space-around;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.just-start {
+    justify-content: flex-start;
+}
+
+.just-center {
+    justify-content: center;
+}
+
+.just-end {
+    justify-content: flex-end;
+}
+
+.item-start {
+    align-items: flex-start;
+}
+
+.item-center {
+    align-items: center;
+}
+
+.item-end {
+    align-items: flex-end;
+}
+
+.gap-2 {
+    gap: 2%;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}
+
+.wrap-reverse {
+    flex-wrap: wrap-reverse;
+}
+
+.w-15 {
+    width: 15%;
+}
+
+.w-85 {
+    width: 85%;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.w-32 {
+    width: 32%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-75 {
+    width: 75%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.margin-h {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.margin-v {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.margin {
+    margin: auto;
+}
+
+.margin-left {
+    margin-left: auto;
+}
+
+.margin-right {
+    margin-right: auto;
+}
+
+.bg-red {
+    background-color: red;
+}
+
+.bg-yellow {
+    background-color: yellow;
+}
+
+.bg-blue {
+    background-color: blue;
+}
+
+.icons-font {
+    font-size: 24px;
+}
+
+
+@media screen and (max-width: 720px) {
+    body {
+        background-color: red;
+    }
+
+    .w-m-100 {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+
+.view-page {
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+}
+
+.adminHeader {
+    height: 50px;
+    padding: 10px 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.adminFooter {
+    padding: 10px 0px;
+    height: 50px;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.users {
+    padding: 20px 40px;
+}
+
+.contentAdmin {
+    flex: 1;
+    overflow: auto;
+}
+
+.searchUsers {
+    border-bottom: 1px solid gainsboro;
+    padding-bottom: 40px;
+    margin-bottom: 20px;
+}
+
+.btnSearchUser {
+    padding-top: 20px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-left: 20px;
+}
+
+.action {
+    display: flex;
+    gap: 10px;
+}
+
+.menuTable {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 0 20px 20px;
+}
+
+.btnTableGroup {
+    display: flex;
+    gap: 10px;
+}
+
+.dashboard {
+    padding: 30px;
+}
