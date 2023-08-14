@@ -1,8 +1,11 @@
 import React from 'react'
+import TableBook from './TableBook'
 
 const Books = () => {
     return (
-        <div>Books</div>
+        <div>
+            <TableBook />
+        </div>
     )
 }
 

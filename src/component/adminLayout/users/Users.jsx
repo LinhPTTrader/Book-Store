@@ -7,6 +7,7 @@ import ViewUser from './ViewUser';
 import EditUser from './EditUser';
 import AddUser from './Adduser';
 import UploadFile from './uploadFile';
+import * as XLSX from 'xlsx';
 
 
 
@@ -100,6 +101,7 @@ const Users = () => {
         }
     }
 
+    // SORT Theo trường trong Table
     const handleSort = async (name) => {
         const res = await sort(name);
         if (res && res.data) {
@@ -107,6 +109,23 @@ const Users = () => {
             setLoading(false)
         }
     }
+
+
+    //Download File SVG 
+    const downloadExcel = async () => {
+        const res = await getAllUser();
+        if (res && res.data) {
+            const worksheet = XLSX.utils.json_to_sheet(res.data);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+            //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+            XLSX.writeFile(workbook, "DataSheet.xlsx");
+        } else {
+            message.error('Có lỗi xảy ra');
+        }
+
+    };
 
     const url = `http://localhost:8080/images/avatar/`;
     console.log('render')
@@ -200,14 +219,14 @@ const Users = () => {
                     <div></div>
                     <div className='btnTableGroup'>
                         <UploadFile></UploadFile>
-                        {/* <Button
+                        <Button
                             type="primary"
                             icon={<AiOutlineCloudDownload />}
 
-                            onClick={() => enterLoading(1)}
+                            onClick={() => downloadExcel()}
                         >
-                            Import
-                        </Button> */}
+                            Download
+                        </Button>
                         <AddUser setIsDeleteUser={setIsDeleteUser} isDeleteUser={isDeleteUser} />
                     </div>
                 </div>

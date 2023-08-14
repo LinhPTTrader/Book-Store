@@ -46,7 +46,7 @@ export const getAllUser = async () => {
     }
 }
 
-
+// GET USER PAGINATION
 export const getUserPagination = async (current, pageSize) => {
     try {
         const { data } = await axios.get(`/api/v1/user?current=${current}&pageSize=${pageSize}`);
@@ -78,7 +78,7 @@ export const filterUser = async (query) => {
     }
 }
 
-//SORT 
+//SORT USER THEO NAME, EMAIL
 export const sort = async (query) => {
     // console.log(`/api/v1/user?current=1 &pageSize=10 &sort=${query} `)
     try {
@@ -110,10 +110,73 @@ export const editUser = async (user) => {
     }
 }
 
+// Post ListUser
+export const postListUser = async (listUser) => {
+    // console.log(user)
+    console.log(typeof (listUser))
+    try {
+        const { data } = await axios.post('/api/v1/user/bulk-create', listUser);
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
+// =>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BOOOK <<<<<<<<<<<<<<<<<<<<<<<==//
+
+export const getBookPagination = async (current, pageSize) => {
+    try {
+        const { data } = await axios.get(`/api/v1/book?current=${current}&pageSize=${pageSize}`);
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
+
+//SORT BOOK THEO Tên sách và Tác giả
+export const sortBook = async (query) => {
+    // console.log(`/api/v1/user?current=1 &pageSize=10 &sort=${query} `)
+    try {
+        const { data } = await axios.get(`/api/v1/book?current=1 &pageSize=10 &sort=${query} `);
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
 
 
+//FILTER BOOKS THEO TÊN SÁCH VÀ TÊN TÁC GIẢ
+export const filterBook = async (query) => {
+    console.log(query)
+    try {
+        const { data } = await axios.get(`/api/v1/book?current=1 &pageSize=10${query} `);
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
 
+// DELETE BOOK
+export const deleteBook = async (id) => {
+    try {
+        const { data } = await axios.delete(`/api/v1/book/${id}`);
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
 
+// CREATE BOOK
+
+// ADD NEW USER BY ADMIN
+export const createBook = async (book) => {
+    // console.log(user)
+    try {
+        const { data } = await axios.post('/api/v1/book', book);
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
 
 
 

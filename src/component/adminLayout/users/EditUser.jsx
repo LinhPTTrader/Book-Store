@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, InputNumber, Modal, Select, message } from 'antd';
+import { Button, Form, Input, Modal, message } from 'antd';
 import { editUser } from '../../../services/api';
 
 const EditUser = (props) => {

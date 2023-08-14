@@ -1,61 +1,74 @@
 import React, { useState } from 'react';
-import { Button, Card, Descriptions, Drawer, Space } from 'antd';
-const ViewUser = ({ user }) => {
+import { Button, Descriptions, Drawer, Space } from 'antd';
+import ListImage from './ListImage';
+const ViewBook = ({ book }) => {
     const [open, setOpen] = useState(false);
-    const URL = `http://localhost:8080/images/avatar/`;
     const showLargeDrawer = () => {
-        console.log(user)
+        console.log(book)
         setOpen(true);
     };
     const onClose = () => {
         setOpen(false);
     };
+    const url = `http://localhost:8080/images/book/`;
     const items = [
         {
             key: '1',
-            label: 'Avatar',
-            children: <img className="avatar" src={URL + user.avatar} />,
+            label: 'Ảnh',
+            children: <img className="avatar" src={url + book.thumbnail} />,
         },
         {
             key: '2',
             label: 'ID',
-            children: user._id,
+            children: book._id,
 
         },
         {
             key: '3',
-            label: 'Name',
-            children: user.fullName,
+            label: 'Tên Sách',
+            children: book.mainText,
 
         },
         {
             key: '4',
-            label: 'Telephone',
-            children: user.phone,
+            label: 'Tác giả',
+            children: book.author,
 
         },
         {
             key: '5',
-            label: 'email',
-            children: user.email,
+            label: 'Giá',
+            children: book.price,
 
         },
         {
             key: '6',
-            label: 'ROLE',
-            children: user.role,
+            label: 'Đã bán',
+            children: book.sold,
 
         },
         {
             key: '7',
-            label: 'createdAt',
-            children: user.createdAt,
+            label: 'Số lượng',
+            children: book.quantity,
 
         },
         {
             key: '8',
+            label: 'Thể loại',
+            children: book.category,
+
+        },
+        {
+            key: '9',
+            label: 'createdAt',
+            children: book.createdAt,
+
+        },
+        {
+            key: '10',
             label: 'updatedAt',
-            children: user.updatedAt,
+            children: book.updatedAt,
         }
 
     ];
@@ -67,7 +80,7 @@ const ViewUser = ({ user }) => {
                 </Button>
             </Space>
             <Drawer
-                title='Info User'
+                title='Thông tin chi tiết sách'
                 placement="right"
                 size='large'
                 onClose={onClose}
@@ -84,8 +97,9 @@ const ViewUser = ({ user }) => {
                 <Descriptions
                     items={items}
                 />
+                <ListImage book={book} />
             </Drawer>
         </>
     );
 };
-export default ViewUser;
+export default ViewBook;
