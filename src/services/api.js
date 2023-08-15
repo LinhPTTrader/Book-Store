@@ -178,6 +178,42 @@ export const createBook = async (book) => {
     }
 }
 
+// GET CATEGORY
+export const getCategory = async () => {
+    // console.log(user)
+    try {
+        const { data } = await axios.get('/api/v1/database/category');
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
+
+// GET CATEGORY
+export const postListImageBook = async (fileImg) => {
+    // console.log(user)
+    // console.log(fileImg)
+    try {
+        // console.log(fileImg)
+        const bodyFormData = new FormData();
+        bodyFormData.append('fileImg', fileImg);
+        // console.log(bodyFormData)
+        const { data } = await axios({
+            method: 'post',
+            url: '/api/v1/file/upload',
+            data: bodyFormData,
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "upload-type": "book"
+            },
+        });;
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
+
+
 
 
 
