@@ -1,15 +1,34 @@
 import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Typography, message } from 'antd'
 import { useForm } from 'antd/es/form/Form';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AddThumbnail from './AddThumbnail';
+import AddListSliser from './AddListSliser';
+import { getCategory, postBook } from '../../../services/api';
 
 
 const CreatBook = () => {
     const [form] = Form.useForm();
-    const [fileList, setFileList] = useState([]);
     //Tạo list Image hiện thị AddThumb
-    const [image, setImage] = useState([]);
-    const [thumbnail, setThumbnail] = useState();
+    const [image, setImage] = useState([]); // Biến này để set Image phần Thumbnail
+    const [thumbnail, setThumbnail] = useState(null);
+    // List Slider
+    const [slider, setSlider] = useState([])
+    const [listImage, setListImage] = useState([])
+    const [listCategory, setListCategory] = useState([])
+
+    //Category
+    useEffect(() => {
+        getCategory()
+            .then(res => {
+                if (res && res.data) {
+                    setListCategory(res.data.map(item => ({
+                        value: item,
+                        label: item
+                    })))
+                }
+            })
+    }, [])
+
 
     // Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,25 +40,46 @@ const CreatBook = () => {
         //Check điều kiện Form hợp lệ hay chưa
         form.validateFields()
             .then(values => {
-                console.log("info Book:", values)
-                console.log("image", thumbnail)
-                setIsModalOpen(false);
-                form.resetFields();
+                // console.log("info Book:", values)
+                // console.log("image", thumbnail)
+                // console.log('listSlider', slider)
+
+                let newSlider = slider.map(item => item.name);
+                let book = values;
+                book = { ...book, thumbnail: thumbnail.thumbnail, slider: newSlider }
+                postBook(book)
+                    .then(res => {
+                        if (res && res.data) {
+                            console.log(res)
+                            message.success('Thêm mới thành công')
+                            setIsModalOpen(false);
+                            form.resetFields();
+                            setImage([]);
+                            setSlider([]);
+                            setListImage([]);
+                            setThumbnail(null)
+                        } else {
+                            message.error('Thêm mới không thành công')
+                        }
+                    })
+
             })
             .catch(() => message.error('Vui lòng nhập đầy đủ các trường thông tin'))
 
     };
     const handleCancel = () => {
+        // console.log(slider)
         form.resetFields();
-        setFileList([]);
-        setImage([])
+        setImage([]);
+        setSlider([]);
+        setListImage([]);
+        setThumbnail(null)
         setIsModalOpen(false);
     };
     return (
-        <div>
-
+        <div style={{ padding: 20 }}>
             <Button type="primary" onClick={showModal}>
-                Open Modal
+                Thêm Sách
             </Button>
             <Modal width={900} title="Thêm mới sách" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <Form form={form}>
@@ -88,25 +128,7 @@ const CreatBook = () => {
                                         width: 120,
                                     }}
                                     // onChange={handleChange}
-                                    options={[
-                                        {
-                                            value: 'jack',
-                                            label: 'Jack',
-                                        },
-                                        {
-                                            value: 'lucy',
-                                            label: 'Lucy',
-                                        },
-                                        {
-                                            value: 'Yiminghe',
-                                            label: 'yiminghe',
-                                        },
-                                        {
-                                            value: 'disabled',
-                                            label: 'Disabled',
-                                            disabled: true,
-                                        },
-                                    ]}
+                                    options={listCategory}
                                 />
                             </Form.Item>
                         </Col>
@@ -127,8 +149,10 @@ const CreatBook = () => {
                         </Col>
                     </Row>
                 </Form>
-                <Typography.Title level={4}>Hình đại diện sách</Typography.Title>
+                <Typography.Title level={5}>Hình đại diện sách</Typography.Title>
                 <AddThumbnail image={image} setImage={setImage} setThumbnail={setThumbnail} />
+                <Typography.Title level={5}>Thêm mô tả hình ảnh cho sách</Typography.Title>
+                <AddListSliser slider={slider} listImage={listImage} setListImage={setListImage} setSlider={setSlider} />
             </Modal>
         </div >
     )

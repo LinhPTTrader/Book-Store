@@ -213,7 +213,15 @@ export const postListImageBook = async (fileImg) => {
     }
 }
 
-
-
+// Thêm mới Book
+export const postBook = async (book) => {
+    // console.log(book)
+    try {
+        const { data } = await axios.post('/api/v1/book', book);
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}
 
 
