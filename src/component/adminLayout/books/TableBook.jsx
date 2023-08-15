@@ -1,6 +1,6 @@
 import { Button, Popconfirm, Table, message } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { getBookPagination, sortBook } from '../../../services/api';
+import { deleteBook, getBookPagination, sortBook } from '../../../services/api';
 import ViewUser from '../users/ViewUser';
 import ViewBook from './ViewBook';
 import FilterBook from './filterBook';
@@ -37,6 +37,7 @@ const TableBook = () => {
 
     }, [])
 
+
     // Get book khi thay đổi Panigation 
     useEffect(() => {
         getBookPagination(pagination.current, pagination.pageSize)
@@ -45,13 +46,14 @@ const TableBook = () => {
                     setListBooks(res.data.result)
                 }
             })
-    }, [pagination.current, pagination.pageSize])
+    }, [pagination.current, pagination.pageSize, changeTable])
 
     // Delete book 
-    const deleteBook = (id) => {
+    const removeBook = (id) => {
         deleteBook(id)
             .then(res => {
-                if (res.status === 200) {
+                console.log(res)
+                if (+res.statusCode === 200) {
                     message.success('Xóa thành công')
                 } else {
                     message.error('Xóa thất bại')
@@ -123,7 +125,7 @@ const TableBook = () => {
                     <Popconfirm
                         title="Delete user"
                         description="Are you sure to delete this user?"
-                        onConfirm={() => deleteBook(book._id)}
+                        onConfirm={() => removeBook(book._id)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -136,7 +138,7 @@ const TableBook = () => {
     return (
         <div style={{ padding: 20 }}>
             <FilterBook setListBooks={setListBooks} setLoading={setLoading} />
-            <CreatBook changeTable={changeTable} setChangeTable={changeTable} />
+            <CreatBook changeTable={changeTable} setChangeTable={setChangeTable} />
             <Table
                 columns={columns}
                 loading={loading}

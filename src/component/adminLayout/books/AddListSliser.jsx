@@ -22,7 +22,6 @@ const AddListSliser = ({ slider, setSlider, listImage, setListImage }) => {
 
     // Xử lý File >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     const handleCancel = () => {
-        setListImage([]);
         setPreviewOpen(false);
 
     };
@@ -33,6 +32,7 @@ const AddListSliser = ({ slider, setSlider, listImage, setListImage }) => {
         setPreviewImage(file.url || file.preview);
         setPreviewOpen(true);
         setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+        console.log(slider)
     };
     const handleChange = ({ fileList: newFileList }) => {
         const newArr = newFileList.map(item => {
@@ -41,8 +41,8 @@ const AddListSliser = ({ slider, setSlider, listImage, setListImage }) => {
 
             }
         })
-        console.log('Mang image upload: ', newArr)
-        console.log('Mang Slide', slider)
+        // console.log('Mang image upload: ', newArr)
+        // console.log('Mang Slide', slider)
         if (slider.length > newArr.length) {
             const newArr2 = []
             slider.forEach(element => {

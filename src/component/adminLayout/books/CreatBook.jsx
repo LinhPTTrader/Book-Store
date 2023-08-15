@@ -6,7 +6,7 @@ import AddListSliser from './AddListSliser';
 import { getCategory, postBook } from '../../../services/api';
 
 
-const CreatBook = () => {
+const CreatBook = ({ changeTable, setChangeTable }) => {
     const [form] = Form.useForm();
     //Tạo list Image hiện thị AddThumb
     const [image, setImage] = useState([]); // Biến này để set Image phần Thumbnail
@@ -46,7 +46,7 @@ const CreatBook = () => {
 
                 let newSlider = slider.map(item => item.name);
                 let book = values;
-                book = { ...book, thumbnail: thumbnail.thumbnail, slider: newSlider }
+                book = { ...book, thumbnail: thumbnail, slider: newSlider }
                 postBook(book)
                     .then(res => {
                         if (res && res.data) {
@@ -57,9 +57,10 @@ const CreatBook = () => {
                             setImage([]);
                             setSlider([]);
                             setListImage([]);
-                            setThumbnail(null)
+                            setThumbnail(null);
+                            setChangeTable(!changeTable)
                         } else {
-                            message.error('Thêm mới không thành công')
+                            message.error(res.message)
                         }
                     })
 

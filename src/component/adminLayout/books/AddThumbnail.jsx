@@ -67,7 +67,7 @@ const AddThumbnail = ({ setThumbnail, image, setImage }) => {
             .then(res => {
                 if (res && res.data) {
                     // console.log(res.data)
-                    setThumbnail({ thumbnail: res.data.fileUploaded })
+                    setThumbnail(res.data.fileUploaded)
                     //onSuccess('Upload thành công')
                 }
             })

@@ -157,6 +157,7 @@ export const filterBook = async (query) => {
 
 // DELETE BOOK
 export const deleteBook = async (id) => {
+    console.log(id)
     try {
         const { data } = await axios.delete(`/api/v1/book/${id}`);
         return data;
@@ -218,6 +219,7 @@ export const postBook = async (book) => {
     // console.log(book)
     try {
         const { data } = await axios.post('/api/v1/book', book);
+        console.log(data)
         return data;
     } catch (err) {
         return 'Loi he thong'
