@@ -190,7 +190,7 @@ export const getCategory = async () => {
     }
 }
 
-// GET CATEGORY
+
 export const postListImageBook = async (fileImg) => {
     // console.log(user)
     // console.log(fileImg)

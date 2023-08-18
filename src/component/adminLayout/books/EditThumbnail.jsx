@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-
+import { Modal, Upload } from 'antd';
 import { v4 as uuidv4 } from 'uuid'; // Lấy UI duy nhất
 import { postListImageBook } from '../../../services/api';
-
-// Base 64 Xử lý files >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const getBase64 = (file) =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -13,15 +10,18 @@ const getBase64 = (file) =>
         reader.onload = () => resolve(reader.result);
         reader.onerror = (error) => reject(error);
     });
-
-const AddThumbnail = ({ setThumbnail, image, setImage }) => {
+const EditThumbnail = ({ thumbnail, setThumbnail }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
     const URL = `http://localhost:8080/images/book/`;
+    const [fileList, setFileList] = useState([{
+        uid: uuidv4(),
+        name: thumbnail,
+        status: 'done',
+        url: URL + thumbnail,
+    }]);
 
-    console.log(image)
-    // Xử lý File >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     const handleCancel = () => {
         setPreviewOpen(false)
     };
@@ -33,19 +33,30 @@ const AddThumbnail = ({ setThumbnail, image, setImage }) => {
         setPreviewOpen(true);
         setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
     };
-
-    //Thêm or thay đổi Image
     const handleChange = ({ fileList: newFileList }) => {
-
         const newArr = newFileList.map(item => {
             return {
                 ...item, status: 'done'
 
             }
         })
-        setImage([newArr[newArr.length - 1]])
+        setFileList([newArr[newArr.length - 1]])
     };
-    //=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    // Post file img lên Server
+    const postListFile = ({ file, onSuccess, onError }) => {
+        // console.log(file)
+        postListImageBook(file)
+            .then(res => {
+                if (res && res.data) {
+                    // console.log(res.data)
+
+                    setThumbnail(res.data.fileUploaded)
+                    //onSuccess('Upload thành công')
+                }
+            })
+        //.catch(err => onError('Upload thất bại'))
+    }
     const uploadButton = (
         <div>
             <PlusOutlined />
@@ -58,35 +69,20 @@ const AddThumbnail = ({ setThumbnail, image, setImage }) => {
             </div>
         </div>
     );
-
-
-    // Post file img lên Server
-    const postListFile = ({ file, onSuccess, onError }) => {
-        // console.log(file)
-        postListImageBook(file)
-            .then(res => {
-                if (res && res.data) {
-                    // console.log(res.data)
-                    setThumbnail(res.data.fileUploaded)
-                    //onSuccess('Upload thành công')
-                }
-            })
-        //.catch(err => onError('Upload thất bại'))
-    }
     return (
-        <div>
-            <Upload
-                listType="picture-card"
-                fileList={image}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                customRequest={postListFile}
-                showUploadList={
-                    { showRemoveIcon: false }
-                } // Xóa Icon Remove
-            >
-                {image.length >= 8 ? null : uploadButton}
-            </Upload >
+        <div><Upload
+            // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+            customRequest={postListFile}
+            showUploadList={
+                { showRemoveIcon: false }
+            } // Xóa Icon Remove
+        >
+            {fileList.length >= 8 ? null : uploadButton}
+        </Upload>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
                 <img
                     alt="example"
@@ -95,9 +91,8 @@ const AddThumbnail = ({ setThumbnail, image, setImage }) => {
                     }}
                     src={previewImage}
                 />
-            </Modal>
-        </div>
+            </Modal></div>
     )
 }
 
-export default AddThumbnail
+export default EditThumbnail

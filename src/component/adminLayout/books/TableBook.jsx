@@ -5,6 +5,7 @@ import ViewUser from '../users/ViewUser';
 import ViewBook from './ViewBook';
 import FilterBook from './filterBook';
 import CreatBook from './CreatBook';
+import EditBook from './EditBook';
 
 const TableBook = () => {
     const [listBooks, setListBooks] = useState([]); // Danh sách Book
@@ -55,6 +56,7 @@ const TableBook = () => {
                 console.log(res)
                 if (+res.statusCode === 200) {
                     message.success('Xóa thành công')
+                    setChangeTable(!changeTable)
                 } else {
                     message.error('Xóa thất bại')
                 }
@@ -120,7 +122,7 @@ const TableBook = () => {
             key: '8',
             render: (book) => (
                 <div className='action'>
-                    < button > Edit </button>
+                    <EditBook book={book} />
                     <ViewBook book={book} />
                     <Popconfirm
                         title="Delete user"

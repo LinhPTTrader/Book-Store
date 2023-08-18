@@ -78,6 +78,7 @@ const AddListSliser = ({ slider, setSlider, listImage, setListImage }) => {
         postListImageBook(file)
             .then(res => {
                 if (res && res.data) {
+                    console.log(res)
                     setSlider(slider => [...slider, {
                         name: res.data.fileUploaded,
                         uid: file.uid
