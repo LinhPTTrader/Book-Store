@@ -19,33 +19,15 @@ const ListImage = ({ book }) => {
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
     const URL = `http://localhost:8080/images/book/`;
-    const [fileList, setFileList] = useState([
-    ]);
-    useEffect(() => {
-        console.log(book)
-        // Khởi tạo listImage với giá trị ban đầu là Thumbnail
-        let listImage = [
-            {
-                uid: uuidv4(),
-                name: book.thumbnail,
-                status: 'done',
-                url: URL + book.thumbnail,
-            }
-        ];
-        // Thêm dữ liệu Slider vào listImage để hiện thị ra màn hình
-        book.slider.forEach((element) => {
-            let a = {
-                uid: uuidv4(),
-                name: element,
-                status: 'done',
-                url: URL + element
-            }
-            // console.log(a)
-            listImage.push(a)
-        });
-        // console.log(listImage)
-        setFileList(listImage)
-    }, [])
+    const [fileList, setFileList] = useState(book.slider.map(element => (
+        {
+            uid: uuidv4(),
+            name: element,
+            status: 'done',
+            url: URL + element
+        }
+    )));
+
     // Xử lý File >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     const handleCancel = () => setPreviewOpen(false);
     const handlePreview = async (file) => {

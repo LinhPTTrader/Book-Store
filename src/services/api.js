@@ -227,3 +227,14 @@ export const postBook = async (book) => {
 }
 
 
+// Edit Book
+export const editBook = async (book, id) => {
+    console.log(book)
+    try {
+        const { data } = await axios.put(`/api/v1/book/${id}`, book);
+        console.log(data)
+        return data;
+    } catch (err) {
+        return 'Loi he thong'
+    }
+}

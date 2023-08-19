@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Table, message } from 'antd'
+import { Button, Popconfirm, Slider, Table, message } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { deleteBook, getBookPagination, sortBook } from '../../../services/api';
 import ViewUser from '../users/ViewUser';
@@ -6,8 +6,12 @@ import ViewBook from './ViewBook';
 import FilterBook from './filterBook';
 import CreatBook from './CreatBook';
 import EditBook from './EditBook';
+import CESlider from './CESlider';
+
+
 
 const TableBook = () => {
+
     const [listBooks, setListBooks] = useState([]); // Danh sách Book
     const [loading, setLoading] = useState(false); // Tạo hiệu ứng loading
     const [changeTable, setChangeTable] = useState(false);
@@ -44,6 +48,7 @@ const TableBook = () => {
         getBookPagination(pagination.current, pagination.pageSize)
             .then(res => {
                 if (res && res.data) {
+
                     setListBooks(res.data.result)
                 }
             })
@@ -122,7 +127,7 @@ const TableBook = () => {
             key: '8',
             render: (book) => (
                 <div className='action'>
-                    <EditBook book={book} />
+                    <EditBook book={book} changeTable={changeTable} setChangeTable={setChangeTable} />
                     <ViewBook book={book} />
                     <Popconfirm
                         title="Delete user"

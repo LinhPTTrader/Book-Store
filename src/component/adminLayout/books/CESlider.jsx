@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Modal, Upload } from 'antd';
-import { v4 as uuidv4 } from 'uuid';
+import { Button, Modal, Upload } from 'antd';
 import { postListImageBook } from '../../../services/api';
+import { v4 as uuidv4 } from 'uuid'; // Lấy UI duy nhất
 const getBase64 = (file) =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -11,20 +11,28 @@ const getBase64 = (file) =>
         reader.onerror = (error) => reject(error);
     });
 
-const EditListSlider = ({ slider, setSlider }) => {
+const CESlider = ({ slider, setSlider }) => {
+    const URL = `http://localhost:8080/images/book/`;
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
-    const URL = `http://localhost:8080/images/book/`;
-    const [fileList, setFileList] = useState(slider.map(image => ({
-        uid: uuidv4(),
-        name: image,
-        status: 'done',
-        url: URL + image,
-    })))
+    const [fileList, setFileList] = useState([]); // Biến này sẽ lưu những File ban đầu or không có file nào
+
+    useEffect(() => {
+        let list = slider.map(item => ({
+            uid: uuidv4(),
+            status: 'done',
+            name: item,
+            url: URL + item
+
+        }))
+        setSlider(list);
+        setFileList(list);
+    }, [])
 
 
-    const handleCancel = () => setPreviewOpen(false);
+    const handleCancelImage = () => setPreviewOpen(false);
+
     const handlePreview = async (file) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
@@ -32,48 +40,41 @@ const EditListSlider = ({ slider, setSlider }) => {
         setPreviewImage(file.url || file.preview);
         setPreviewOpen(true);
         setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
-    };
-    const handleChange = ({ fileList: newFileList }) => {
-        console.log(newFileList)
+    }
+
+    // Khi có sự thây đổi hình ảnh
+    const handleChange = (
+        { fileList: newFileList, file: fileChange }) => {
         const newArr = newFileList.map(item => {
             return {
                 ...item, status: 'done'
 
             }
         })
-        // console.log('Mang image upload: ', newArr)
-        // console.log('Mang Slide', slider)
+        // TH1
         if (slider.length > newArr.length) {
-            const newArr2 = []
-            fileList.forEach(element => {
-                newArr.forEach(value => {
-                    console.log(element.uid, value.uid)
-                    if (element.uid === value.uid) {
-                        newArr2.push(element);
-                    }
-                })
-            });
-            setSlider(newArr2);
+            let arr = slider.filter(item => item.uid != fileChange.uid);
+            console.log('remove Image')
+            setSlider(arr)
         }
         setFileList(newArr)
-
     };
+
+    // Post file img lên Server
     const postListFile = ({ file, onSuccess, onError }) => {
+        // console.log(file)
         postListImageBook(file)
             .then(res => {
                 if (res && res.data) {
-                    console.log(res)
-                    setSlider(slider => [...slider, {
+                    setSlider(listImage => [...listImage, {
                         name: res.data.fileUploaded,
                         uid: file.uid
-                    }]);
-                    // setSlider(slider => [...slider, res.data.fileUploaded]);
-
-                    //onSuccess('Upload thành công')
+                    }])
                 }
             })
-            .catch(err => onError('Upload thất bại'))
+        //.catch(err => onError('Upload thất bại'))
     }
+
     const uploadButton = (
         <div>
             <PlusOutlined />
@@ -86,20 +87,23 @@ const EditListSlider = ({ slider, setSlider }) => {
             </div>
         </div>
     );
+
+
     return (
         <div>
-            <Upload
 
+
+            <Upload
+                // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
                 customRequest={postListFile}
-                multiple={true}
             >
                 {fileList.length >= 8 ? null : uploadButton}
             </Upload>
-            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancelImage}>
                 <img
                     alt="example"
                     style={{
@@ -108,8 +112,9 @@ const EditListSlider = ({ slider, setSlider }) => {
                     src={previewImage}
                 />
             </Modal>
+
         </div>
     )
 }
 
-export default EditListSlider
+export default CESlider

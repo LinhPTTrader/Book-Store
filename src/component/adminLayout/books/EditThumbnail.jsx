@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Modal, Upload } from 'antd';
+import { Modal, Typography, Upload } from 'antd';
 import { v4 as uuidv4 } from 'uuid'; // Lấy UI duy nhất
 import { postListImageBook } from '../../../services/api';
 const getBase64 = (file) =>
@@ -70,19 +70,21 @@ const EditThumbnail = ({ thumbnail, setThumbnail }) => {
         </div>
     );
     return (
-        <div><Upload
-            // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            listType="picture-card"
-            fileList={fileList}
-            onPreview={handlePreview}
-            onChange={handleChange}
-            customRequest={postListFile}
-            showUploadList={
-                { showRemoveIcon: false }
-            } // Xóa Icon Remove
-        >
-            {fileList.length >= 8 ? null : uploadButton}
-        </Upload>
+        <div>
+            <Typography.Title level={5}>Hình đại diện sách</Typography.Title>
+            <Upload
+                // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                listType="picture-card"
+                fileList={fileList}
+                onPreview={handlePreview}
+                onChange={handleChange}
+                customRequest={postListFile}
+                showUploadList={
+                    { showRemoveIcon: false }
+                } // Xóa Icon Remove
+            >
+                {fileList.length >= 8 ? null : uploadButton}
+            </Upload>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
                 <img
                     alt="example"

@@ -2,8 +2,9 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, Typography, 
 import { useForm } from 'antd/es/form/Form';
 import React, { useEffect, useState } from 'react'
 import AddThumbnail from './AddThumbnail';
-import AddListSliser from './AddListSliser';
+
 import { getCategory, postBook } from '../../../services/api';
+import CESlider from './CESlider';
 
 
 const CreatBook = ({ changeTable, setChangeTable }) => {
@@ -153,7 +154,8 @@ const CreatBook = ({ changeTable, setChangeTable }) => {
                 <Typography.Title level={5}>Hình đại diện sách</Typography.Title>
                 <AddThumbnail image={image} setImage={setImage} setThumbnail={setThumbnail} />
                 <Typography.Title level={5}>Thêm mô tả hình ảnh cho sách</Typography.Title>
-                <AddListSliser slider={slider} listImage={listImage} setListImage={setListImage} setSlider={setSlider} />
+                {/* <AddListSliser slider={slider} listImage={listImage} setListImage={setListImage} setSlider={setSlider} /> */}
+                <CESlider slider={slider} setSlider={setSlider} />
             </Modal>
         </div >
     )

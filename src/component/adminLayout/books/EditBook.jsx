@@ -1,24 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select } from 'antd';
+import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, message } from 'antd';
 import EditThumbnail from './EditThumbnail';
-import EditListSlider from './EditListSlider';
+import { editBook, getCategory } from '../../../services/api';
+import CESlider from './CESlider';
 
 
-const EditBook = ({ book }) => {
+const EditBook = ({ book, changeTable, setChangeTable }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = Form.useForm();
     const [listCategory, setListCategory] = useState([])
     const [dataBook, setDataBook] = useState(book);
     const [thumbnail, setThumbnail] = useState(book.thumbnail);
-    const [slider, setSlider] = useState(book.slider)
+    const [slider, setSlider] = useState(book.slider);
+
+
+    //Category
+    useEffect(() => {
+        getCategory()
+            .then(res => {
+                if (res && res.data) {
+                    setListCategory(res.data.map(item => ({
+                        value: item,
+                        label: item
+                    })))
+                }
+            })
+    }, [])
 
     const showModal = () => {
         setIsModalOpen(true);
     };
     const handleOk = () => {
         // Da Edit duoc Thumbnail
-        console.log(thumbnail)
-        console.log(slider)
+        let newSlider = slider.map(item => item.name)
+        let bookData = { ...form.getFieldsValue(), slider: newSlider, thumbnail }
+        console.log(bookData)
+        editBook(bookData, book._id)
+            .then(res => {
+                if (res && res.data) {
+                    setChangeTable(!changeTable)
+                    message.success('Thay đổi thành công')
+                } else {
+                    message.error('Có lỗi xảy ra')
+                }
+            })
         setIsModalOpen(false);
 
     };
@@ -110,7 +135,8 @@ const EditBook = ({ book }) => {
                 <div>
                     {/* slider={slider} setSlider={setSlider} */}
                     <EditThumbnail thumbnail={thumbnail} setThumbnail={setThumbnail} />
-                    <EditListSlider slider={slider} setSlider={setSlider} />
+                    {/* <EditListSlider slider={slider} setSlider={setSlider} /> */}
+                    <CESlider slider={slider} setSlider={setSlider} />
                 </div>
             </Modal>
         </div>

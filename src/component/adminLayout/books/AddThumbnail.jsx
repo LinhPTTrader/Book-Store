@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Upload } from 'antd';
+import { Modal, Typography, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { v4 as uuidv4 } from 'uuid'; // Lấy UI duy nhất
@@ -75,6 +75,7 @@ const AddThumbnail = ({ setThumbnail, image, setImage }) => {
     }
     return (
         <div>
+
             <Upload
                 listType="picture-card"
                 fileList={image}
