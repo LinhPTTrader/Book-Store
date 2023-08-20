@@ -59,6 +59,10 @@ function App() {
       errorElement: <NotFound />,
       children: [
         {
+          path: '',
+          element: <Home />
+        },
+        {
           path: 'home',
           element: <Home />
         },

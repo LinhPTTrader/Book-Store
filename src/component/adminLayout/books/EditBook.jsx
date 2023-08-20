@@ -3,7 +3,7 @@ import { Button, Col, Form, Input, InputNumber, Modal, Row, Select, message } fr
 import EditThumbnail from './EditThumbnail';
 import { editBook, getCategory } from '../../../services/api';
 import CESlider from './CESlider';
-
+import { v4 as uuidv4 } from 'uuid'; // Lấy UI duy nhất
 
 const EditBook = ({ book, changeTable, setChangeTable }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +12,7 @@ const EditBook = ({ book, changeTable, setChangeTable }) => {
     const [dataBook, setDataBook] = useState(book);
     const [thumbnail, setThumbnail] = useState(book.thumbnail);
     const [slider, setSlider] = useState(book.slider);
-
+    const URL = `http://localhost:8080/images/book/`;
 
     //Category
     useEffect(() => {
@@ -24,7 +24,14 @@ const EditBook = ({ book, changeTable, setChangeTable }) => {
                         label: item
                     })))
                 }
-            })
+            });
+        setSlider(slider.map(item => ({
+            uid: uuidv4(),
+            status: 'done',
+            name: item,
+            url: URL + item
+
+        })));
     }, [])
 
     const showModal = () => {

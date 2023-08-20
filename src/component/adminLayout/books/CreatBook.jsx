@@ -16,7 +16,6 @@ const CreatBook = ({ changeTable, setChangeTable }) => {
     const [slider, setSlider] = useState([])
     const [listImage, setListImage] = useState([])
     const [listCategory, setListCategory] = useState([])
-
     //Category
     useEffect(() => {
         getCategory()

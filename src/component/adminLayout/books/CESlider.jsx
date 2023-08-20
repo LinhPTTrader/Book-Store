@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Modal, Upload } from 'antd';
 import { postListImageBook } from '../../../services/api';
-import { v4 as uuidv4 } from 'uuid'; // Lấy UI duy nhất
+
 const getBase64 = (file) =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -16,20 +16,9 @@ const CESlider = ({ slider, setSlider }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
-    const [fileList, setFileList] = useState([]); // Biến này sẽ lưu những File ban đầu or không có file nào
-
     useEffect(() => {
-        let list = slider.map(item => ({
-            uid: uuidv4(),
-            status: 'done',
-            name: item,
-            url: URL + item
-
-        }))
-        setSlider(list);
-        setFileList(list);
+        console.log(slider)
     }, [])
-
 
     const handleCancelImage = () => setPreviewOpen(false);
 
@@ -45,20 +34,16 @@ const CESlider = ({ slider, setSlider }) => {
     // Khi có sự thây đổi hình ảnh
     const handleChange = (
         { fileList: newFileList, file: fileChange }) => {
-        const newArr = newFileList.map(item => {
-            return {
-                ...item, status: 'done'
-
-            }
-        })
-        // TH1
-        if (slider.length > newArr.length) {
+        console.log(newFileList)
+        if (slider.length > newFileList.length) {
             let arr = slider.filter(item => item.uid != fileChange.uid);
             console.log('remove Image')
             setSlider(arr)
         }
-        setFileList(newArr)
+
+
     };
+
 
     // Post file img lên Server
     const postListFile = ({ file, onSuccess, onError }) => {
@@ -68,12 +53,16 @@ const CESlider = ({ slider, setSlider }) => {
                 if (res && res.data) {
                     setSlider(listImage => [...listImage, {
                         name: res.data.fileUploaded,
-                        uid: file.uid
+                        uid: file.uid,
+                        status: 'done',
+                        url: URL + res.data.fileUploaded
                     }])
                 }
             })
         //.catch(err => onError('Upload thất bại'))
     }
+
+
 
     const uploadButton = (
         <div>
@@ -96,12 +85,13 @@ const CESlider = ({ slider, setSlider }) => {
             <Upload
                 // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 listType="picture-card"
-                fileList={fileList}
+                fileList={slider}
                 onPreview={handlePreview}
                 onChange={handleChange}
                 customRequest={postListFile}
+
             >
-                {fileList.length >= 8 ? null : uploadButton}
+                {slider.length >= 8 ? null : uploadButton}
             </Upload>
             <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancelImage}>
                 <img
