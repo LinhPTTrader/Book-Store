@@ -1,39 +1,64 @@
 import React, { useEffect, useState } from 'react'
 import { Image, Rate, Typography } from 'antd';
 import { getBookPagination } from '../../services/api';
+import { Pagination } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { doPagination } from '../../redux/author/paginationSlice';
+
 const ListBook = () => {
 
     const [listBook, setListBook] = useState([]);
+    const url = `http://localhost:8080/images/book/`;
+    const [total, setTotal] = useState(0);
+    const navigate = useNavigate();
+
+    const current = useSelector(state => state.pagination.currentDefault)
+    const dispath = useDispatch()
     useEffect(() => {
-        getBookPagination(20, 1)
+        getBookPagination(current, 10)
             .then(res => {
                 if (res && res.data) {
-                    console.log(res.data)
-                    setListBook(res.data)
+                    // console.log(res.data)
+                    setListBook(res.data.result)
+                    setTotal(res.data.meta.total)
                 }
             })
     }, [])
-    return (
-        <div>
-            <Image.PreviewGroup
-                items={[
-                    'https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
-                    'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
-                    'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',
-                ]}
-            >
-                <Image
-                    width={200}
-                    src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
-                />
-            </Image.PreviewGroup>
 
-            <p>Tên sách</p>
-            <div style={{ fontSize: 12 }}>
-                <Rate style={{ fontSize: 10 }} disabled defaultValue={5} /> | <span>Đã bán :</span>
+    const handleChangePanigation = (page, pageSize) => {
+        dispath(doPagination(page))
+        getBookPagination(page, pageSize)
+            .then(res => {
+                if (res && res.data) {
+                    setListBook(res.data.result)
+                }
+            })
+    }
+    console.log('render')
+    return (
+        <>
+            <div className='flex wrap'>
+                {listBook.map(item => (
+                    <div key={item._id} className='descriptionBook gap-10 flex-col text-center'>
+                        <Image
+                            width={200}
+                            src={url + item.thumbnail}
+                        />
+                        <div onClick={() => navigate("/book", {
+                            state: { id: item._id }
+                        })}>
+                            <p>{item.mainText}</p>
+                            <div style={{ fontSize: 12 }}>
+                                <Rate style={{ fontSize: 10 }} disabled defaultValue={5} /> | <span>Đã bán : {item.sold}</span>
+                            </div>
+                            <p>{item.price} VNĐ</p>
+                        </div>
+                    </div>
+                ))}
             </div>
-            <p>215.000 VNĐ</p>
-        </div>
+            <Pagination defaultCurrent={current} defaultPageSize={10} total={total} onChange={handleChangePanigation} />
+        </>
     )
 }
 

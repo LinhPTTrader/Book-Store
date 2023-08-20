@@ -7,7 +7,6 @@ import ListBook from './ListBook';
 const Home = () => {
     const [listCategory, setListCategory] = useState([]);
 
-
     useEffect(() => {
         getCategory()
             .then(res => {
@@ -26,9 +25,9 @@ const Home = () => {
                     </ul>
                 </div>
             </div>
-            <div className='w-85 listBook'>
+            <div className='w-80 listBook'>
                 <div>
-                    <div className='flex gap-20'>
+                    <div className='flex gap-20 titleListBookParent'>
                         <span className='titleListBook'>Phổ biến</span >
                         <span className='titleListBook'>Bán chạy</span >
                         <span className='titleListBook'>Hàng mới</span >

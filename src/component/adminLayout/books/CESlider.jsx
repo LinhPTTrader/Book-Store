@@ -89,6 +89,7 @@ const CESlider = ({ slider, setSlider }) => {
                 onPreview={handlePreview}
                 onChange={handleChange}
                 customRequest={postListFile}
+                multiple={true}
 
             >
                 {slider.length >= 8 ? null : uploadButton}

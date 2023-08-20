@@ -8,6 +8,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { logout } from '../../services/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { doLogout } from '../../redux/author/authSlice';
+import { doPagination } from '../../redux/author/paginationSlice';
 
 
 const Navbar = (props) => {
@@ -56,6 +57,7 @@ const Navbar = (props) => {
     return (
         <div className='navBar'>
             <div onClick={() => {
+                dispatch(doPagination(1))
                 navigate('/')
             }} className='navImg'>
                 <img src={logo} />

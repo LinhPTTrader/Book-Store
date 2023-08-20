@@ -22,6 +22,8 @@ import Users from "./component/adminLayout/users/Users";
 import Books from "./component/adminLayout/books/Books";
 import Orders from "./component/adminLayout/orders/Orders";
 import AdminContent from "./component/adminLayout/adminContent/AdminContent";
+import Footer from "./component/footer/Footer";
+import DetailBook from "./page/DetailBook";
 
 function App() {
   const dispatch = useDispatch()
@@ -42,7 +44,7 @@ function App() {
     return (
       <div className='main'>
         <Navbar profile={profile} setProfile={setProfile} />
-        <div className='container'>
+        <div>
           <Outlet></Outlet>
         </div>
         {/* <Footer /> */}
@@ -77,6 +79,10 @@ function App() {
         {
           path: 'profile',
           element: <Profile />
+        },
+        {
+          path: 'book',
+          element: <DetailBook />
         }
 
       ]
